@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Header from "./components/Header";
-import styles from './global.scss'
+import "./Global.scss";
+import styles from "./App.module.scss";
+
 import Post from "./Post";
+import Sidebar from "./components/Sidebar";
 
 const posts = [
   {
@@ -15,7 +18,12 @@ function App() {
   return (
     <div>
       <Header />
-      <Post author={posts[0].author} content={posts[0].content} />
+      <div className={styles.wrapper}>
+        <Sidebar/>
+        <main>
+          <Post author={posts[0].author} content={posts[0].content} />
+        </main>
+      </div>
     </div>
   );
 }
