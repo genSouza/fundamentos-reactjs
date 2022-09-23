@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import "./Global.scss";
 import styles from "./App.module.scss";
 
-import Post from "./Post";
+import Post from "./components/Post";
 import Sidebar from "./components/Sidebar";
 
 const posts = [
@@ -19,7 +19,7 @@ function App() {
     <div>
       <Header />
       <div className={styles.wrapper}>
-        <Sidebar/>
+        <Sidebar />
         <main>
           <Post author={posts[0].author} content={posts[0].content} />
         </main>
