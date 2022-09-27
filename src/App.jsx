@@ -21,7 +21,8 @@ function App() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
-          <Post author={posts[0].author} content={posts[0].content} />
+          <Post />
+          <Post />
         </main>
       </div>
     </div>

@@ -11,7 +11,7 @@ const Post = () => {
             src="https://github.com/genSouza.png"
             alt="user"
           />
-          <div className={styles.authorInfo}>
+          <div className={styles["author-info"]}>
             <strong>Genilton Souza</strong>
             <span>Engenheiro de software</span>
           </div>
@@ -26,6 +26,9 @@ const Post = () => {
           quibusdam ab quasi. Unde id quos recusandae nulla libero? Est
           repellendus ipsum deserunt molestias laboriosam eaque dolorem ullam ut
           sint?
+        </p>
+        <p>
+          <a href="#">link</a>
         </p>
         <p>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia tempora
