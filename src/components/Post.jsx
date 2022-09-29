@@ -1,40 +1,52 @@
 import React from "react";
 import styles from "./Post.module.scss";
+import { format, formatDistance, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 import { Comment } from "./Comment";
 import { Avatar } from "./Avatar";
 
-const Post = () => {
+const Post = ({ author, publishedAt, content, id }) => {
+  // const dateFormatted = new Intl.DateTimeFormat("pt-br", {
+  //   day: "2-digit",
+  //   month: "long",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  // }).format(publishedAt);
+  const dateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+    locale: ptBR,
+  });
+
+  const dateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  });
+
+  const postContent = content.map((line) => {
+    if (line.type === "paragraph") {
+      return <p>{line.content}</p>;
+    } else if (line.type === "link") {
+      return (
+        <p>
+          <a href="#">{line.content}</a>
+        </p>
+      );
+    }
+  });
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar hasBorder src="https://github.com/genSouza.png" alt="user" />
+          <Avatar hasBorder src={author.avatarUrl} alt="user" />
           <div className={styles["author-info"]}>
-            <strong>Genilton Souza</strong>
-            <span>Engenheiro de software</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
-        <time title="23 de Setembro às 14:02" dateTime="2022-09-23 14:02:04">
-          Publicado há 1h
+        <time title={dateFormatted} dateTime={publishedAt.toISOString()}>
+          {dateRelativeToNow}
         </time>
       </header>
-      <div className={styles.content}>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia tempora
-          quibusdam ab quasi. Unde id quos recusandae nulla libero? Est
-          repellendus ipsum deserunt molestias laboriosam eaque dolorem ullam ut
-          sint?
-        </p>
-        <p>
-          <a href="#">link</a>
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia tempora
-          quibusdam ab quasi. Unde id quos recusandae nulla libero? Est
-          repellendus ipsum deserunt molestias laboriosam eaque dolorem ullam ut
-          sint?
-        </p>
-      </div>
+      <div className={styles.content}>{postContent}</div>
 
       <form className={styles["comment-form"]} action="">
         <strong>Deixe seu feedback</strong>
