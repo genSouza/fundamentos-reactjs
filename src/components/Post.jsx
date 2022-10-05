@@ -1,17 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Post.module.scss";
-import { format, formatDistance, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { Comment } from "./Comment";
 import { Avatar } from "./Avatar";
 
 const Post = ({ author, publishedAt, content, id }) => {
-  // const dateFormatted = new Intl.DateTimeFormat("pt-br", {
-  //   day: "2-digit",
-  //   month: "long",
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  // }).format(publishedAt);
+  const [comments, setComments] = useState(["Post muito bacana, hein?"]);
+  const [newCommentText, setNewCommentText] = useState("");
   const dateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
     locale: ptBR,
   });
@@ -21,17 +17,32 @@ const Post = ({ author, publishedAt, content, id }) => {
     addSuffix: true,
   });
 
-  const postContent = content.map((line) => {
+  const postContent = content.map((line, index) => {
     if (line.type === "paragraph") {
-      return <p>{line.content}</p>;
+      return <p key={index}>{line.content}</p>;
     } else if (line.type === "link") {
       return (
-        <p>
+        <p key={index}>
           <a href="#">{line.content}</a>
         </p>
       );
     }
   });
+
+  const commentContent = comments.map((comment, index) => {
+    return <Comment key={index} content={comment} />;
+  });
+
+  function handleNewCommentChange() {
+    setNewCommentText(event.target.value);
+  }
+
+  function handleCreateNewComment() {
+    event.preventDefault();
+    setComments([...comments, newCommentText]);
+    setNewCommentText("");
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -48,19 +59,22 @@ const Post = ({ author, publishedAt, content, id }) => {
       </header>
       <div className={styles.content}>{postContent}</div>
 
-      <form className={styles["comment-form"]} action="">
+      <form
+        className={styles["comment-form"]}
+        onSubmit={handleCreateNewComment}
+      >
         <strong>Deixe seu feedback</strong>
-        <textarea placeholder="Deixe um comentário" />
+        <textarea
+          value={newCommentText}
+          onChange={handleNewCommentChange}
+          placeholder="Deixe um comentário"
+        />
         <footer>
           <button type="submit">Publicar</button>
         </footer>
       </form>
 
-      <div className={styles["comment-list"]}>
-        <Comment />
-        <Comment />
-        <Comment />
-      </div>
+      <div className={styles["comment-list"]}>{commentContent}</div>
     </article>
   );
 };
