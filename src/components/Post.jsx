@@ -31,7 +31,11 @@ const Post = ({ author, publishedAt, content, id }) => {
 
   const commentContent = comments.map((comment, index) => {
     return (
-      <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
+      <Comment
+        key={comment}
+        content={comment}
+        onDeleteComment={deleteComment}
+      />
     );
   });
 
@@ -45,8 +49,12 @@ const Post = ({ author, publishedAt, content, id }) => {
     setNewCommentText("");
   }
 
-  function deleteComment(comment) {
-    console.log("deletar comentario", comment);
+  function deleteComment(commentToDelete) {
+    const newCommentList = comments.filter((comment) => {
+      return comment !== commentToDelete;
+    });
+
+    setComments(newCommentList);
   }
 
   return (
