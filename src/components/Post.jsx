@@ -39,7 +39,10 @@ const Post = ({ author, publishedAt, content, id }) => {
     );
   });
 
+  const isCommentEmpty = newCommentText.length === 0;
+
   function handleNewCommentChange() {
+    event.target.setCustomValidity("");
     setNewCommentText(event.target.value);
   }
 
@@ -47,6 +50,10 @@ const Post = ({ author, publishedAt, content, id }) => {
     event.preventDefault();
     setComments([...comments, newCommentText]);
     setNewCommentText("");
+  }
+
+  function handleNewCommentInvalid() {
+    event.target.setCustomValidity("Esse campo é obrigatório");
   }
 
   function deleteComment(commentToDelete) {
@@ -80,11 +87,15 @@ const Post = ({ author, publishedAt, content, id }) => {
         <strong>Deixe seu feedback</strong>
         <textarea
           value={newCommentText}
-          onChange={handleNewCommentChange}
           placeholder="Deixe um comentário"
+          onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
 
