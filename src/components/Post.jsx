@@ -19,10 +19,10 @@ const Post = ({ author, publishedAt, content, id }) => {
 
   const postContent = content.map((line, index) => {
     if (line.type === "paragraph") {
-      return <p key={index}>{line.content}</p>;
+      return <p key={line.content}>{line.content}</p>;
     } else if (line.type === "link") {
       return (
-        <p key={index}>
+        <p key={line.content}>
           <a href="#">{line.content}</a>
         </p>
       );
@@ -30,7 +30,9 @@ const Post = ({ author, publishedAt, content, id }) => {
   });
 
   const commentContent = comments.map((comment, index) => {
-    return <Comment key={index} content={comment} />;
+    return (
+      <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
+    );
   });
 
   function handleNewCommentChange() {
@@ -41,6 +43,10 @@ const Post = ({ author, publishedAt, content, id }) => {
     event.preventDefault();
     setComments([...comments, newCommentText]);
     setNewCommentText("");
+  }
+
+  function deleteComment(comment) {
+    console.log("deletar comentario", comment);
   }
 
   return (
